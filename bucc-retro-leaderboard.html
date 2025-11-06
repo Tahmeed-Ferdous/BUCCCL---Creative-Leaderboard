@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUCC Creative Leaderboard 🎮</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="header">
+                <h2 id="weekTitle">WEEK 1 LEADERBOARD</h2>
+            </div>
+            
+            <div class="champion-banner">
+                <h3>The Funniest Member<br>Challenge Winner</h3>
+                <img src="images/jaber.jpg" alt="" class="champion-avatar" id="championAvatar">
+                <div class="champion-details">
+                    <div class="champion-name" id="championName">Loading...</div>
+                    <div class="champion-subtitle" id="championActivity">🏅 Most Wins</div>
+                </div>
+            </div>
+            
+            <div class="stats-banner">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalParticipants">0</div>
+                    <div class="stat-label">👥 Players</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalSubmissions">0</div>
+                    <div class="stat-label">📝 Submissions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="avgSubmissions">0</div>
+                    <div class="stat-label">📊 Avg/Person</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalPoints">0</div>
+                    <div class="stat-label">⭐ Points</div>
+                </div>
+            </div>
+            
+            <div class="leaderboard-container">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>📝 Subs</th>
+                                <th>⭐ Pts</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody">
+                            <!-- Leaderboard rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="logo">
+                <h1>BUCC CREATIVE Leaderboard</h1>
+                <p>Weekly Board</p>
+            </div>
+            
+            <div class="week-tabs" id="weekTabs">
+                <!-- Week tabs will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data structure
+        const weekData = [
+            {
+                week: 1,
+                activity: "Funniest Member Challenge",
+                date: "Nov 1-7",
+                players: [
+                    { name: "Jaber Hasan", submissions: 1, points: 3, avatar: "images/jaber.jpg" },
+                    { name: "Rakibul Islam Nayan", submissions: 1, points: 2, avatar: "images/nayan.jpg" },
+                    { name: "Tahmeed Ferdous", submissions: 1, points: 0, avatar: "images/tahmeed.jpg" },
+                    { name: "Luban Latif", submissions: 1, points: 0, avatar: "images/luban.jpg" },
+
+                ]
+            },
+            {
+                week: 2,
+                activity: "Upcoming... 🖼️",
+                date: "Nov 8-14",
+                players: [
+                    { name: "None", submissions: 6, points: 92, avatar: "https://ui-avatars.com/api/?name=Rafid+Hassan&size=45&background=4ecdc4&color=fff" },
+                ]
+            },
+        ];
+
+        let currentWeek = 0;
+
+        // Generate stars
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Generate week tabs
+        function generateWeekTabs() {
+            const tabsContainer = document.getElementById('weekTabs');
+            tabsContainer.innerHTML = '';
+            
+            weekData.forEach((week, index) => {
+                const tab = document.createElement('div');
+                tab.className = `week-tab ${index === currentWeek ? 'active' : ''}`;
+                tab.onclick = () => switchWeek(index);
+                
+                const winner = week.players[0];
+                tab.innerHTML = `
+                    <h3>Week ${week.week}</h3>
+                    <p>${week.activity}</p>
+                    <p class="week-date">${week.date}</p>
+                    <div class="winner-badge">👑 ${winner.name}</div>
+                `;
+                
+                tabsContainer.appendChild(tab);
+            });
+        }
+
+        // Switch week
+        function switchWeek(weekIndex) {
+            currentWeek = weekIndex;
+            generateWeekTabs();
+            updateLeaderboard();
+        }
+
+        // Update leaderboard
+        function updateLeaderboard() {
+            const week = weekData[currentWeek];
+            document.getElementById('weekTitle').textContent = `🏆 WEEK ${week.week}: ${week.activity} 🏆`;
+            
+            // Update stats
+            const totalParticipants = week.players.length;
+            const totalSubmissions = week.players.reduce((sum, p) => sum + p.submissions, 0);
+            const avgSubmissions = (totalSubmissions / totalParticipants).toFixed(1);
+            const totalPoints = week.players.reduce((sum, p) => sum + p.points, 0);
+            
+            document.getElementById('totalParticipants').textContent = totalParticipants;
+            document.getElementById('totalSubmissions').textContent = totalSubmissions;
+            document.getElementById('avgSubmissions').textContent = avgSubmissions;
+            document.getElementById('totalPoints').textContent = totalPoints;
+            
+            // Update champion
+            updateChampion();
+            
+            // Update table
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = '';
+            
+            week.players.forEach((player, index) => {
+                const row = document.createElement('tr');
+                const rank = index + 1;
+                let rankClass = '';
+                let statusBadge = '';
+                let rankEmoji = '';
+                
+                if (rank === 1) {
+                    rankClass = 'rank-1';
+                    statusBadge = '<span class="status-badge status-1st">🥇 1ST</span>';
+                    rankEmoji = '👑';
+                } else if (rank === 2) {
+                    rankClass = 'rank-2';
+                    statusBadge = '<span class="status-badge status-2nd">🥈 2ND</span>';
+                    rankEmoji = '⭐';
+                } else if (rank === 3) {
+                    rankClass = 'rank-3';
+                    statusBadge = '<span class="status-badge status-3rd">🥉 3RD</span>';
+                    rankEmoji = '🌟';
+                } else {
+                    statusBadge = '<span class="status-badge status-participant">✨ Active</span>';
+                    rankEmoji = '#' + rank;
+                }
+                
+                row.innerHTML = `
+                    <td class="rank-cell ${rankClass}">${rankEmoji}</td>
+                    <td>
+                        <div class="player-cell">
+                            <img src="${player.avatar}" alt="${player.name}" class="player-avatar">
+                            <span class="player-name">${player.name}</span>
+                        </div>
+                    </td>
+                    <td class="submissions-cell">${player.submissions}</td>
+                    <td class="points-cell">${player.points}</td>
+                    <td>${statusBadge}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Calculate and update consistent champion
+        function updateChampion() {
+            const winCounts = {};
+            
+            weekData.forEach(week => {
+                const winner = week.players[0].name;
+                winCounts[winner] = (winCounts[winner] || 0) + 1;
+            });
+            
+            let champion = '';
+            let maxWins = 0;
+            
+            for (const [name, wins] of Object.entries(winCounts)) {
+                if (wins > maxWins) {
+                    maxWins = wins;
+                    champion = name;
+                }
+            }
+            
+            document.getElementById('championName').textContent = champion;
+            document.getElementById('championActivity').textContent = `🏅 ${maxWins} Week${maxWins > 1 ? 's' : ''} Won`;
+        }
+
+        // Initialize
+        generateStars();
+        generateWeekTabs();
+        updateLeaderboard();
+    </script>
+</body>
+</html>
