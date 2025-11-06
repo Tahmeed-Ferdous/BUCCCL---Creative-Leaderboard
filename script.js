@@ -1,81 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUCC Creative Leaderboard 🎮</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="stars" id="stars"></div>
-    
-    <div class="container">
-        <div class="main-content">
-            <div class="header">
-                <h2 id="weekTitle">WEEK 1 LEADERBOARD</h2>
-            </div>
-            
-            <div class="champion-banner">
-                <h3>The Funniest Member<br>Challenge Winner</h3>
-                <img src="images/jaber.jpg" alt="" class="champion-avatar" id="championAvatar">
-                <div class="champion-details">
-                    <div class="champion-name" id="championName">Loading...</div>
-                    <div class="champion-subtitle" id="championActivity">🏅 Most Wins</div>
-                </div>
-            </div>
-            
-            <div class="stats-banner">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalParticipants">0</div>
-                    <div class="stat-label">👥 Players</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalSubmissions">0</div>
-                    <div class="stat-label">📝 Submissions</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="avgSubmissions">0</div>
-                    <div class="stat-label">📊 Avg/Person</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalPoints">0</div>
-                    <div class="stat-label">⭐ Points</div>
-                </div>
-            </div>
-            
-            <div class="leaderboard-container">
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th>📝 Subs</th>
-                                <th>⭐ Pts</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboardBody">
-                            <!-- Leaderboard rows will be generated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <div class="sidebar">
-            <div class="logo">
-                <h1>BUCC CREATIVE Leaderboard</h1>
-                <p>Weekly Board</p>
-            </div>
-            
-            <div class="week-tabs" id="weekTabs">
-                <!-- Week tabs will be generated here -->
-            </div>
-        </div>
-    </div>
 
-    <script>
         // Sample data structure
         const weekData = [
             {
@@ -235,6 +158,3 @@
         generateStars();
         generateWeekTabs();
         updateLeaderboard();
-    </script>
-</body>
-</html>
